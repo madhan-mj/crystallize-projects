@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from tkinter import Tk, END, Entry, N, E, S, W, Button
 from tkinter import font
 from tkinter import Label
@@ -7,6 +6,37 @@ from functools import partial
 
 def get_input(entry, argu):
     entry.insert(END, argu)
+
+
+def backspace(entry):
+    input_len = len(entry.get())
+    entry.delete(input_len - 1)
+
+
+def clear(entry):
+    entry.delete(0, END)
+
+
+def calc(entry):
+    input_info = entry.get()
+    try:
+        output = str(eval(input_info.strip()))
+    except ZeroDivisionError:
+        popupmsg()
+        output = ""
+    clear(entry)
+    entry.insert(END, output)
+
+
+def popupmsg():
+    popup = Tk()
+    popup.resizable(0, 0)
+    popup.geometry("120x100")
+    popup.title("Alert")
+    label = Label(popup, text="Cannot divide by 0 ! \n Enter valid values")
+    label.pack(side="top", fill="x", pady=10)
+    B1 = Button(popup, text="Okay", bg="#DDDDDD", command=popup.destroy)
+    B1.pack()
 
 
 def cal():
@@ -94,9 +124,6 @@ def cal():
     button18 = Button(root, text='^', fg=text_fg, bg=cal_button_bg, padx=10, pady=3,
                       command=lambda: get_input(entry, '**'))
     button18.grid(row=5, column=2, pady=5)
-
-
-    
     def quit():
         exit['command'] = root.quit()
     exit = Button(root, text='Quit', fg='white', bg='black', command=quit, height=1, width=7)
@@ -104,3 +131,6 @@ def cal():
 
     root.mainloop()
 
+
+if __name__ == '__main__':
+    cal()
